@@ -3,39 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Twister Генератор Онлайн</title>
+  <title>Twister Generator Pro</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
-      background: #fafafa;
-      padding: 20px;
+      background: linear-gradient(135deg, #ffeb3b, #ff5722);
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     h1 {
-      color: #c62828;
+      font-size: 2.8em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
     }
     #pose {
-      font-size: 2.5em;
-      margin-top: 40px;
+      font-size: 2em;
+      margin-top: 20px;
       font-weight: bold;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.2);
+      max-width: 90%;
     }
     button {
       font-size: 1.3em;
-      padding: 12px 25px;
-      margin-top: 50px;
+      padding: 15px 35px;
+      margin-top: 30px;
+      border: none;
+      border-radius: 8px;
+      background: #4caf50;
+      color: white;
       cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #388e3c;
+    }
+    #controls {
+      margin-top: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 1em;
+      width: 60px;
+      text-align: center;
+      border-radius: 5px;
+      border: none;
+      margin-left: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>🎲 Туистър Генератор Онлайн</h1>
-  <div id="pose">Натисни “Старт” за начална поза</div>
-  <button onclick="startGame()">Старт</button>
+  <h1>🎲 Twister Generator Pro</h1>
+
+  <div id="controls">
+    Брой играчи: <input type="number" id="players" value="2" min="2" max="8">
+    <br>
+    <button onclick="startGame()">Старт</button>
+  </div>
+
+  <div id="pose">Натисни „Старт“, за да започнеш!</div>
 
   <script>
     const colors = ["червено", "синьо", "зелено", "жълто"];
     const limbs = ["дясна ръка", "лява ръка", "десен крак", "ляв крак"];
     let intervalId;
+    let currentPlayer = 1;
+    let totalPlayers = 2;
 
     function speak(text) {
       const utterance = new SpeechSynthesisUtterance(text);
@@ -46,15 +87,23 @@
     function newPose() {
       const limb = limbs[Math.floor(Math.random() * limbs.length)];
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const pose = `${limb} – ${color}`;
+      const pose = `Играч ${currentPlayer}: ${limb} – ${color}`;
       document.getElementById("pose").textContent = pose;
       speak(pose);
+
+      // преминаване към следващия играч
+      currentPlayer++;
+      if (currentPlayer > totalPlayers) {
+        currentPlayer = 1;
+      }
     }
 
     function startGame() {
+      totalPlayers = parseInt(document.getElementById("players").value) || 2;
+      currentPlayer = 1;
       newPose();
       if (intervalId) clearInterval(intervalId);
-      intervalId = setInterval(newPose, 35000);
+      intervalId = setInterval(newPose, 25000); // 25 секунди
     }
   </script>
 </body>
