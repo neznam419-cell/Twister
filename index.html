@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twister Генератор Онлайн</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fafafa;
+      padding: 20px;
+    }
+    h1 {
+      color: #c62828;
+    }
+    #pose {
+      font-size: 2.5em;
+      margin-top: 40px;
+      font-weight: bold;
+    }
+    button {
+      font-size: 1.3em;
+      padding: 12px 25px;
+      margin-top: 50px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Туистър Генератор Онлайн</h1>
+  <div id="pose">Натисни “Старт” за начална поза</div>
+  <button onclick="startGame()">Старт</button>
+
+  <script>
+    const colors = ["червено", "синьо", "зелено", "жълто"];
+    const limbs = ["дясна ръка", "лява ръка", "десен крак", "ляв крак"];
+    let intervalId;
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "bg-BG";
+      speechSynthesis.speak(utterance);
+    }
+
+    function newPose() {
+      const limb = limbs[Math.floor(Math.random() * limbs.length)];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const pose = `${limb} – ${color}`;
+      document.getElementById("pose").textContent = pose;
+      speak(pose);
+    }
+
+    function startGame() {
+      newPose();
+      if (intervalId) clearInterval(intervalId);
+      intervalId = setInterval(newPose, 35000);
+    }
+  </script>
+</body>
+</html>
